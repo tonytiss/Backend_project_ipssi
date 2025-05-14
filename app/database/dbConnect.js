@@ -29,7 +29,7 @@ const sequelizeClient = new Sequelize(
     try {
 
         await sequelizeClient.authenticate()
-        console.log('✅ Connection succeed')
+        console.log('✅ DB Connection succeed')
 
     } catch (err) {
         console.trace(err)
