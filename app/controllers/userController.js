@@ -21,7 +21,7 @@ const userController = {
         }
 
     },
-    async destroy(req, res) {
+    async delete(req, res) {
         const { id } = req.params
     
         try {
@@ -37,7 +37,33 @@ const userController = {
           console.trace(err)
           return res.status(500).json({ err })
         }
+    },
+    async getOneByEmail(req, res) {
+
+      const {decodedToken} = req
+
+      if(!decodedToken){
+          return res.status(401).json({ message: "no no decoded token"})
       }
+      const { email } = decodedToken
+
+      try {
+
+        const user = await User.findOne({
+          where: {
+            email: email
+          }
+        })
+
+        if(!user){
+          return res.status(404).json({ message: "no user found by email"}
+          )
+        }
+        return res.status(200).json({ user })
+      } catch{
+          return res.status(500).json[{err}]
+      }
+    }
 }
 
 

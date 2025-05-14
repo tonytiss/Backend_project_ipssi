@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const path = require('path')
+const cors = require('cors')
 const { dbConnectionTest } = require('./app/database/dbConnect')
 const userRoutes = require('./app/routes/userRoutes')
 
@@ -15,6 +16,7 @@ const app = express()
 
 app.use(express.urlencoded())
 app.use(express.json())
+app.use(cors())
 app.use('/api/v1/user', userRoutes)
 
 /* function rootCallback(req, res){
