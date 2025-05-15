@@ -14,7 +14,7 @@ dbConnectionTest()
 const app = express()
 
 
-app.use(express.urlencoded())
+app.use(express.urlencoded({ extended: true, limit: '100kb' }))
 app.use(express.json())
 app.use(cors())
 app.use('/api/v1/user', userRoutes)

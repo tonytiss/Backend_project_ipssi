@@ -3,6 +3,7 @@ const { body, validationResult } = require('express-validator')
 const validatorMiddlewares = {
     
     password: body('password')
+    .if(body('password').exists())    /*  existe() pour le cas de l'update */
     .notEmpty().withMessage("Le mot de passe est requis")
     .isStrongPassword({
       minLength: 12,
@@ -14,10 +15,11 @@ const validatorMiddlewares = {
     .trim(),
 
     
-    email: body('email').notEmpty().withMessage("L'email est vide"),
+    email: body('email').notEmpty().withMessage("L'email est vide"),   /* pour le login */
 
     
     emailcreate: body('email')
+        .if(body('email').exists())
         .notEmpty().withMessage("L'email est vide")  
         .isEmail().withMessage("L'email n'est pas valide")  
         .trim(),
