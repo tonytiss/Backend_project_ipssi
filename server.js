@@ -16,6 +16,20 @@ const app = express()
 
 app.use(express.urlencoded({ extended: true, limit: '100kb' }))
 app.use(express.json())
+
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+      console.error('❌ Mauvais JSON reçu :', err.message)
+      return res.status(400).json({ message: "Requête JSON invalide. Vérifie le format du corps." })
+    }
+    next(err)
+  })
+
+
+
+
+
+
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/notes', notesRoutes)
 
