@@ -26,36 +26,33 @@ async function createNote(req, res) {
 }
 
 async function getNote(req, res) {
-  const { id: requestedId } = req.params; // ID demandé dans l'URL
-  const { email: tokenEmail, role } = req.decodedToken; // info du token
+  const { id: requestedId } = req.params
+  const { email: tokenEmail, role } = req.decodedToken
 
   try {
-    // On retrouve l'utilisateur à partir de l'email du token
-    const tokenUser = await User.findOne({ where: { email: tokenEmail } });
+    const tokenUser = await User.findOne({ where: { email: tokenEmail } })
 
     if (!tokenUser) {
-      return res.status(401).json({ message: "Utilisateur non authentifié." });
+      return res.status(401).json({ message: "Utilisateur non authentifié." })
     }
 
-    // Vérifie que l'utilisateur a le droit de voir ces notes
     if (!(tokenUser.id.toString() === requestedId || role === 'admin')) {
-      return res.status(403).json({ message: "Accès refusé." });
+      return res.status(403).json({ message: "Accès refusé." })
     }
 
-    // Vérifie si l'utilisateur demandé existe
-    const user = await User.findByPk(requestedId);
+    const user = await User.findByPk(requestedId)
     if (!user) {
-      return res.status(404).json({ message: "Utilisateur non trouvé." });
+      return res.status(404).json({ message: "Utilisateur non trouvé." })
     }
 
     // Récupère ses notes
-    const notes = await Note.findAll({ where: { userId: requestedId } });
+    const notes = await Note.findAll({ where: { userId: requestedId } })
 
     return res.json(notes);
 
   } catch (error) {
-    console.error("Erreur lors de la récupération des notes :", error);
-    return res.status(500).json({ message: "Erreur serveur." });
+    console.error("Erreur lors de la récupération des notes :", error)
+    return res.status(500).json({ message: "Erreur serveur." })
   }
 }
 
@@ -91,7 +88,6 @@ async function deleteNote(req, res) {
 
 async function getAllNotesGroupedByUser(req, res) {
     try {
-      // On récupère toutes les notes, avec l'utilisateur lié
       const notes = await Note.findAll({
         include: [{
           model: User,
@@ -126,7 +122,7 @@ async function getAllNotesGroupedByUser(req, res) {
         return acc;
       }, {});
   
-      // Optionnel : convertir en tableau si tu préfères
+      // convertion en tableau 
       const result = Object.values(groupedNotes);
   
       return res.json(result);
