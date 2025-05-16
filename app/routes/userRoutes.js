@@ -13,6 +13,6 @@ route.delete('/:id', [authMiddlewares.checkIfTokenExists, authMiddlewares.decode
 route.post('/login', [validatorMiddlewares.email, validatorMiddlewares.validationResult, loginLimiterByEmail], authController.login)
 route.get('/me', [authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken], userController.getOneByEmail)
 route.get('/index', [authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken], checkAdmin, userController.index)
-route.patch('/:id',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken, validatorMiddlewares.emailcreate, validatorMiddlewares.password,validatorMiddlewares.validationResult],userController.update)
+route.patch('/:id',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken, validatorMiddlewares.emailcreate, validatorMiddlewares.password,validatorMiddlewares.firstname, validatorMiddlewares.lastname, validatorMiddlewares.validationResult],userController.update)
 route.patch('/promoteadmin/:id',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken], checkAdmin, userController.updateRoleToAdmin)
 module.exports = route
