@@ -9,7 +9,7 @@ const checkAdmin = require('../middlewares/checkAdminMiddleware')
 const route = Router()
 
 route.post('/',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken, noteTitle, noteContent, validationResult],noteController.createNote)
-route.get('/:email',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken],noteController.getNote)
+route.get('/:id',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken],noteController.getNote)
 route.delete('/:id', [authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken],noteController.deleteNote)
 route.get('/',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken, checkAdmin],noteController.getAllNotesGroupedByUser)
 
