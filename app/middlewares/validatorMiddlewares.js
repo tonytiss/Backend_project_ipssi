@@ -30,12 +30,12 @@ const validatorMiddlewares = {
     firstname: body('firstName')
         .if(body('firstName').exists())
         .notEmpty().withMessage("Le firstname est requis")
-        .isLength({ max: 50 }).withMessage("L'email ne doit pas dépasser 50 caractères."),
+        .isLength({ max: 50 }).withMessage("Le firstname ne doit pas dépasser 50 caractères."),
 
     lastname: body('lastName')
         .if(body('lastName').exists())
-        .notEmpty().withMessage("Le firstname est requis")
-        .isLength({ max: 50 }).withMessage("L'email ne doit pas dépasser 50 caractères."),    
+        .notEmpty().withMessage("Le lastname est requis")
+        .isLength({ max: 50 }).withMessage("Le lastname ne doit pas dépasser 50 caractères."),    
 
     noteTitle: body('titre')
         .notEmpty().withMessage("Le titre est requis")
