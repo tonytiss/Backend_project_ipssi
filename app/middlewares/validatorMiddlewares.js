@@ -36,12 +36,17 @@ const validatorMiddlewares = {
         .trim(),
 
     validationResult: (req, res, next) => {
-        const result = validationResult(req)
-        if (!result.isEmpty()) {
+        try {
+            const result = validationResult(req)
+            if (!result.isEmpty()) {
             const firstMessage = result.array()[0].msg;
             return res.status(400).json({ error: firstMessage })
+            }
+            next()
+        } catch (error) {
+            console.error('Validation error:', error);
+            return res.status(500).json({ error: 'Erreur interne de validation' })
         }
-        next()
     }
 };
 

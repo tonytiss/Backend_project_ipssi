@@ -26,31 +26,31 @@ async function createNote(req, res) {
 }
 
 async function getNote(req, res) {
-    const { email: requestedEmail } = req.params; // email de l'utilisateur dont on veut les notes
-    const { email: tokenEmail, role } = req.decodedToken;
+    const { email: requestedEmail } = req.params; 
+    const { email: tokenEmail, role } = req.decodedToken
 
     try {
-        // Vérifier que l'utilisateur est autorisé (lui-même ou admin)
+      
         if (!(tokenEmail === requestedEmail || role === 'admin')) {
-            return res.status(403).json({ message: "Accès refusé." });
+            return res.status(403).json({ message: "Accès refusé." })
         }
 
-        // Récupérer l'utilisateur pour avoir son id
-        const user = await User.findOne({ where: { email: requestedEmail } });
+      
+        const user = await User.findOne({ where: { email: requestedEmail } })
         if (!user) {
-            return res.status(404).json({ message: "Utilisateur non trouvé." });
+            return res.status(404).json({ message: "Utilisateur non trouvé." })
         }
 
-        // Récupérer toutes les notes liées à cet utilisateur
+       
         const notes = await Note.findAll({
             where: { userId: user.id }
-        });
+        })
 
-        return res.json(notes);
+        return res.json(notes)
 
     } catch (error) {
         console.error('Erreur lors de la récupération des notes:', error);
-        return res.status(500).json({ message: "Erreur serveur lors de la récupération des notes." });
+        return res.status(500).json({ message: "Erreur serveur lors de la récupération des notes." })
     }
 }
 
@@ -84,9 +84,59 @@ async function deleteNote(req, res) {
     }
 }
 
+async function getAllNotesGroupedByUser(req, res) {
+    try {
+      // On récupère toutes les notes, avec l'utilisateur lié
+      const notes = await Note.findAll({
+        include: [{
+          model: User,
+          attributes: ['id', 'firstName', 'lastName', 'email']
+        }],
+        order: [
+          [User, 'id', 'ASC'],      // trie par utilisateur id
+          ['createdAt', 'DESC']     // puis trie les notes par date de création décroissante
+        ]
+      });
+  
+      // On regroupe les notes par utilisateur dans un objet
+      const groupedNotes = notes.reduce((acc, note) => {
+        const user = note.User;
+        if (!acc[user.id]) {
+          acc[user.id] = {
+            user: {
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email
+            },
+            notes: []
+          };
+        }
+        acc[user.id].notes.push({
+          id: note.id,
+          titre: note.titre,
+          contenu: note.contenu,
+          createdAt: note.createdAt
+        });
+        return acc;
+      }, {});
+  
+      // Optionnel : convertir en tableau si tu préfères
+      const result = Object.values(groupedNotes);
+  
+      return res.json(result);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des notes groupées:', error);
+      return res.status(500).json({ message: 'Erreur serveur lors de la récupération des notes.' });
+    }
+  }
+  
+ 
+
 module.exports = {
     createNote,
     getNote,
-    deleteNote
+    deleteNote,
+    getAllNotesGroupedByUser
 }
 

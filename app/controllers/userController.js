@@ -13,7 +13,6 @@ const userController = {
           return res.status(500).json({ err })
       }
     },
-
     async store(req, res) {
 
       const { firstName, lastName, email, password } = req.body;
@@ -147,8 +146,30 @@ const userController = {
         console.trace(err);
         return res.status(500).json({ error: 'Erreur lors de la mise à jour.' });
       }
-    }
-    
+    },
+    async updateRoleToAdmin(req, res) {
+      const { id } = req.params;
+  
+      try {
+          const user = await User.findByPk(id);
+  
+          if (!user) {
+              return res.status(404).json({ message: `Utilisateur avec l'id ${id} introuvable.` });
+          }
+  
+          if (user.role === 'admin') {
+              return res.status(400).json({ message: 'Cet utilisateur est déjà administrateur.' });
+          }
+  
+          user.role = 'admin';
+          await user.save();
+  
+          return res.status(200).json({ message: `Utilisateur ${user.email} promu administrateur avec succès.` });
+      } catch (error) {
+          console.error('Erreur lors de la mise à jour du rôle:', error);
+          return res.status(500).json({ message: 'Erreur serveur.' });
+      }
+  }
 }
 
 

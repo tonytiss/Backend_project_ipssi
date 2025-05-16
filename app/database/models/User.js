@@ -30,11 +30,11 @@ User.init({
 }, {
     sequelize: sequelizeClient,
     tableName: "Users"
-});
+})
 
 // Hook beforeSave pour hacher le mot de passe avant de sauvegarder l'utilisateur
 User.addHook('beforeSave', async (user) => {
-    if (user.password) {
+    if (user.changed('password')) {
         try {
             const hashedPassword = await argon2.hash(user.password, {
                 type: argon2.argon2id,
@@ -45,7 +45,7 @@ User.addHook('beforeSave', async (user) => {
             throw new Error('Erreur lors du hachage du mot de passe')
         }
     }
-});
+})
 
 module.exports = User;
 
