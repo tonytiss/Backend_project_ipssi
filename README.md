@@ -86,7 +86,13 @@ Voici les validations principales implémentées :
 - **emailcreate**  
   - Pour la création et mise à jour utilisateur.  
   - Doit exister, ne pas être vide et être un email valide.
-
+    
+- **firstname**
+  - Pour la création et mise a jour, le firstname doit exister, ne doit pas être vide et max 50 caractères.
+    
+- **lastname**
+  - Pour la création et mise a jour, le lastname doit exister, ne doit pas être vide et max 50 caractères.
+    
 - **noteTitle**  
   - Le titre de la note est obligatoire.  
   - Longueur maximale : 50 caractères.
