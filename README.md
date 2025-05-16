@@ -31,7 +31,7 @@ La communication entre le backend et la base de données est chiffrée grâce à
 
 - **Créer une note** (`POST /notes/`)  
   Création de note sécurisée avec validation de contenu.
-- **Obtenir les notes d’un utilisateur** (`GET /notes/:email`)  
+- **Obtenir les notes d’un utilisateur** (`GET /notes/:id`)  
   Récupération des notes d’un utilisateur spécifique.
 - **Supprimer une note** (`DELETE /notes/:id`)  
   Suppression sécurisée d’une note.
