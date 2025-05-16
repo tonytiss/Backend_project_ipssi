@@ -6,20 +6,20 @@ class User extends Model {}
 
 User.init({
     firstName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     lastName: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         unique: true,
         allowNull: false
     },
     password: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     role: {
@@ -47,7 +47,7 @@ User.addHook('beforeSave', async (user) => {
     }
 })
 
-module.exports = User;
+module.exports = User
 
 /* console.log(User == sequelizeClient.models.User)
 
@@ -57,5 +57,4 @@ async function syncUserWithDb() {
     })
 }
 
-syncUserWithDb()
- */
+syncUserWithDb() */
