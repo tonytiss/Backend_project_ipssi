@@ -1,4 +1,5 @@
 const  User  = require('../database/models/User')
+const { loginAttempts } = require('../middlewares/limiterMiddleware')
 const jwt = require('jsonwebtoken')
 const argon2 = require('argon2')
 const dotenv = require('dotenv')
@@ -22,6 +23,9 @@ const authController = {
             if(!isPasswordValid){
                 return res.status(401).json({ message: "Invalid credentials"})
             }
+
+            loginAttempts.delete(email)  /* \\ pour le limiter : reinitialise le compteur en cas de connexion reussie */
+
             const token = jwt.sign({ email, role: user.role }, process.env.JWT_SECRET, {
                 expiresIn: '1h'
             })

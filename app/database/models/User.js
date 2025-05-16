@@ -30,24 +30,22 @@ User.init({
 }, {
     sequelize: sequelizeClient,
     tableName: "Users"
-});
+})
 
 // Hook beforeSave pour hacher le mot de passe avant de sauvegarder l'utilisateur
 User.addHook('beforeSave', async (user) => {
-    if (user.password) {
+    if (user.changed('password')) {
         try {
-            // Hacher le mot de passe
             const hashedPassword = await argon2.hash(user.password, {
                 type: argon2.argon2id,
             });
-            // Définir le mot de passe haché sur l'utilisateur
-            user.password = hashedPassword;
+            user.password = hashedPassword
         } catch (err) {
-            console.error('Erreur lors du hachage du mot de passe:', err);
-            throw new Error('Erreur lors du hachage du mot de passe');
+            console.error('Erreur lors du hachage du mot de passe:', err)
+            throw new Error('Erreur lors du hachage du mot de passe')
         }
     }
-});
+})
 
 module.exports = User;
 
@@ -59,5 +57,5 @@ async function syncUserWithDb() {
     })
 }
 
-syncUserWithDb() */
-
+syncUserWithDb()
+ */
