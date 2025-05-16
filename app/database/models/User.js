@@ -57,5 +57,5 @@ async function syncUserWithDb() {
     })
 }
 
-syncUserWithDb() */
-
+syncUserWithDb()
+ */

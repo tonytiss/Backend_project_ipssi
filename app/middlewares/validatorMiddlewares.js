@@ -25,6 +25,16 @@ const validatorMiddlewares = {
         .trim(),
 
     
+    noteTitle: body('titre')
+        .notEmpty().withMessage("Le titre est requis")
+        .isLength({ max: 50 }).withMessage("Le titre ne doit pas dépasser 50 caractères")
+        .trim(),
+
+    noteContent: body('contenu')
+        .notEmpty().withMessage("Le contenu est requis")
+        .isLength({ max: 1000 }).withMessage("Le contenu ne doit pas dépasser 1000 caractères")
+        .trim(),
+
     validationResult: (req, res, next) => {
         const result = validationResult(req)
         if (!result.isEmpty()) {

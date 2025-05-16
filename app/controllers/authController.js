@@ -1,5 +1,5 @@
 const  User  = require('../database/models/User')
-const { loginAttempts } = require('../middlewares/validatorMiddlewares')
+const { loginAttempts } = require('../middlewares/limiterMiddleware')
 const jwt = require('jsonwebtoken')
 const argon2 = require('argon2')
 const dotenv = require('dotenv')
