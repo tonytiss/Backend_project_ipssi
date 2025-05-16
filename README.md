@@ -49,6 +49,10 @@ La communication entre le backend et la base de données est chiffrée grâce à
 
 Le projet utilise plusieurs middlewares personnalisés pour gérer la sécurité des routes via des **tokens JWT** et les rôles des utilisateurs :
 
+- **Body Parser**
+Gestion des erreurs JSON invalides
+Ce middleware permet d’intercepter les requêtes contenant un corps JSON mal formé, et de renvoyer une réponse claire au client
+
 - **checkIfTokenExists**  
   Ce middleware vérifie que la requête HTTP contient un header `Authorization` avec un token JWT valide.  
   - Si le header est absent, la requête est rejetée avec un statut **401 Unauthorized**.  
