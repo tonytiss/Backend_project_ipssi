@@ -14,5 +14,5 @@ route.post('/login', [validatorMiddlewares.email, validatorMiddlewares.validatio
 route.get('/me', [authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken], userController.getOneByEmail)
 route.get('/index', [authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken], checkAdmin, userController.index)
 route.patch('/:id',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken, validatorMiddlewares.emailcreate, validatorMiddlewares.password,validatorMiddlewares.validationResult],userController.update)
-route.patch('/promoteadmin/:id', userController.updateRoleToAdmin)
+route.patch('/promoteadmin/:id',[authMiddlewares.checkIfTokenExists, authMiddlewares.decodeToken], checkAdmin, userController.updateRoleToAdmin)
 module.exports = route
